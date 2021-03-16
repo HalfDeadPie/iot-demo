@@ -10,7 +10,7 @@ const HOST = '0.0.0.0';
 const app = express();
 
 app.get('/', (req, res) => {
-    res.send('Welcome to decoder! Please, use the /decoder route');
+    res.send('Hello! Please, use the /decoder route');
 });
 
 app.get('/decoder', (req, res) => {
