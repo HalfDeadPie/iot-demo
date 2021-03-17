@@ -10,15 +10,16 @@ const HOST = '0.0.0.0';
 const app = express();
 
 app.get('/', (req, res) => {
-    res.send('Hello! Please, use the /decoder route');
+    res.send('Please, use the /decoder route');
 });
 
 app.get('/decoder', (req, res) => {
     var payload = req.query.payload
-    console.log(payload)
+    console.log('Received: ', payload)
     let decoder = require('./decoder')
     let result = decoder.decode_payload(payload)
-    console.log(result)
+    console.log('Response: \n', result)
+    console.log("")
     res.status(200).send(result)
 });
 
