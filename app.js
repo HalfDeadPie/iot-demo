@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/decoder', (req, res) => {
-    var payload = req.query.payload
+    let payload = req.query.payload
     console.log('Received: ', payload)
     let decoder = require('./decoder')
     let result = decoder.decode_payload(payload)

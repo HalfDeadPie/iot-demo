@@ -56,24 +56,24 @@ function extTypeToString(type){
 
 function decode_payload(payload){
     // Parse battery info
-    var batData = payload.substring(POS_BAT_START, POS_BAT_END) // slice battery data only
+    let batData = payload.substring(POS_BAT_START, POS_BAT_END) // slice battery data only
 
-    var batStatus = parseInt(batData,16)>>14 & 0xFF // get only battery status
+    let batStatus = parseInt(batData,16)>>14 & 0xFF // get only battery status
     //console.log(hex2bin(batStatus))
     batStatus = batStatusToString(batStatus.toString(2)) // convert battery status to bits
 
-    var batVoltage = parseInt(batData,16) & 0x3FFF // parse voltage information
+    let batVoltage = parseInt(batData,16) & 0x3FFF // parse voltage information
     // console.log('Battery status:', batStatus)
     // console.log('Battery voltage:', batVoltage)
 
     // Parse built-in temperature and humidity
-    var inTemp = parseSignedInt(payload.substring(POS_BAT_END, POS_INTEMP_END),16)/100 // parse builtin temperature
-    var inHum = parseInt(payload.substring(POS_INTEMP_END, POS_INHUM_END),16)/10 // parse built-in humidity
+    let inTemp = parseSignedInt(payload.substring(POS_BAT_END, POS_INTEMP_END),16)/100 // parse builtin temperature
+    let inHum = parseInt(payload.substring(POS_INTEMP_END, POS_INHUM_END),16)/10 // parse built-in humidity
     // console.log('Built-in temperature:', inTemp)
     // console.log('Built-in humidity:', inHum)
 
     // build result JSON
-    resultJson = {
+    let resultJson = {
         "battery status": batStatus,
         "battery voltage": batVoltage,
         "builtin temperature": inTemp,
@@ -81,8 +81,8 @@ function decode_payload(payload){
     }
 
     // Parse external type and data
-    var extType = parseInt(payload.substring(POS_INHUM_END, POS_EXT_TYPE_END), 16) // parse type of external sensor
-    var extData = null
+    let extType = parseInt(payload.substring(POS_INHUM_END, POS_EXT_TYPE_END), 16) // parse type of external sensor
+    let extData = null
     // console.log('External type:', extType)
 
     // add potential external sensor information
@@ -96,7 +96,12 @@ function decode_payload(payload){
 }
 
 // Argument processing
-var resultJson = decode_payload(process.argv.slice(2).toString())
+let resultJson = decode_payload(process.argv.slice(2).toString())
 //console.log(JSON.stringify(resultJson))
 
 module.exports = { decode_payload }
+
+process.on('exit', function(code) {
+    return console.log(JSON.stringify(resultJson))
+});
+
